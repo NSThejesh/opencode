@@ -101,7 +101,6 @@ export function Home() {
     ),
   )
   const directory = useDirectory()
-  const currentAgent = createMemo(() => local.agent.current().name)
 
   return (
     <>
@@ -130,30 +129,10 @@ export function Home() {
         <box flexGrow={1} />
         <Toast />
       </box>
-      <box paddingTop={1} paddingBottom={1} paddingLeft={2} paddingRight={2} flexDirection="row" flexShrink={0} gap={3}>
+      <box paddingTop={1} paddingBottom={1} paddingLeft={2} paddingRight={2} flexDirection="row" flexShrink={0} gap={2}>
         <text fg={theme.textMuted}>{directory()}</text>
-        <text fg={theme.textMuted}>·</text>
-        <text fg={theme.accent}>{currentAgent()}</text>
         <box flexGrow={1} />
-        <Show when={mcp()}>
-          <text fg={theme.text}>
-            <Switch>
-              <Match when={mcpError()}>
-                <span style={{ fg: theme.error }}>●</span>
-              </Match>
-              <Match when={true}>
-                <span style={{ fg: connectedMcpCount() > 0 ? theme.success : theme.textMuted }}>●</span>
-              </Match>
-            </Switch>
-          </text>
-          <text fg={theme.textMuted}> {connectedMcpCount()} MCP</text>
-        </Show>
-        <text fg={theme.textMuted}>·</text>
-        <text fg={theme.textMuted}>ctrl+x e</text>
-        <text fg={theme.textMuted}>·</text>
-        <box flexShrink={0}>
-          <text fg={theme.textMuted}>{Installation.VERSION}</text>
-        </box>
+        <text fg={theme.textMuted}>{Installation.VERSION}</text>
       </box>
     </>
   )
