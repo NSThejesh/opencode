@@ -1061,18 +1061,22 @@ export function Session() {
     >
       <Show when={t3codeMode()}>
         <box flexDirection="row" flexGrow={1}>
-          <box width={30} flexDirection="column" gap={0}>
+          <box width={20} flexDirection="column" gap={0}>
             <box padding={1} border={["bottom"]}>
-              <text fg={theme.textBold}>Projects</text>
+              <text fg={theme.textBold}>Files</text>
             </box>
             <scrollbox flexGrow={1}>
-              <box paddingLeft={1} paddingRight={1} paddingTop={1} paddingBottom={1}>
-                <text fg={theme.textMuted}>{session()?.root || session()?.cwd || "/"}</text>
-              </box>
+              <For each={messages().flatMap((msg) => (sync.data.part[msg.id] ?? []).filter((p) => p.type === "file"))}>
+                {(part) => (
+                  <box paddingLeft={1} paddingRight={1} paddingTop={1} paddingBottom={1}>
+                    <text fg={theme.textMuted}>{part.filename || part.url.split("/").pop() || "file"}</text>
+                  </box>
+                )}
+              </For>
             </scrollbox>
           </box>
           <box width={1} />
-          <box width={40} flexDirection="column" gap={0}>
+          <box width={35} flexDirection="column" gap={0}>
             <box padding={1} border={["bottom"]} flexDirection="row" justifyContent="space-between">
               <text fg={theme.textBold}>Threads</text>
             </box>
