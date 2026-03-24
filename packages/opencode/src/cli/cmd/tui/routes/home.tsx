@@ -107,34 +107,71 @@ export function Home() {
   )
   const directory = useDirectory()
 
-  const A1 = `/$$   /$$ /$$        /$$$$$$        /$$   /$$  /$$$$$$  /$$$$$$$$ /$$                                         /$$                  `
-  const A2 = `| $$  | $$| $$       /$$__  $$      | $$$ | $$ /$$__  $$|__  $$__/| $$                                        | $$                  `
-  const A3 = `| $$  | $$| $$      | $$  \\ $$      | $$$$| $$| $$  \\__/   | $$   | $$$$$$$   /$$$$$$  /$$  /$$$$$$   /$$$$$$$| $$$$$$$             `
-  const A4 = `| $$$$$$$$| $$      | $$  | $$      | $$ $$ $$|  $$$$$$    | $$   | $$__  $$ /$$__  $$|__/ /$$__  $$ /$$_____/| $$__  $$            `
-  const A5 = `| $$__  $$| $$      | $$  | $$      | $$  $$$$ \\____  $$   | $$   | $$  \\ $$| $$$$$$$$ /$$| $$$$$$$$|  $$$$$$ | $$  \\ $$            `
-  const A6 = `| $$  | $$| $$      | $$  | $$      | $$\\  $$$ /$$  \\ $$   | $$   | $$  | $$| $$_____/| $$| $$_____/ \\____  $$| $$  | $$            `
-  const A7 = `| $$  | $$| $$$$$$$$|  $$$$$$/      | $$ \\  $$|  $$$$$$/   | $$   | $$  | $$|  $$$$$$$| $$|  $$$$$$$ /$$$$$$$/| $$  | $$            `
-  const A8 = `|__/  |__/|________/ \\______/       |__/  \\__/ \\______/    |__/   |__/  |__/ \\_______/| $$ \\_______/|_______/ |__/  |__/            `
-  const A9 = `                                                                                 /$$  | $$                                          `
-  const A10 = `                                                                                |  $$$$$$/                                           `
-  const A11 = `                                                                                 \\______/                                            `
+  const H1 = `╔═╗╔═╗╔╦╗╔═╗╔╦╗╔═╗╦═╗╔╦╗`
+  const H2 = `╚═╗╠═╣ ║ ║╣  ║ ║ ║╠╦╝ ║ `
+  const H3 = `╚═╝╩ ╩ ╩ ╚═╝ ╩ ╚═╝╩╚══╩ `
+
+  const L1 = `╔═╗`
+  const L2 = `║  `
+  const L3 = `╚═╝`
+
+  const O1 = `╔═╗`
+  const O2 = `║  ║`
+  const O3 = `╚═╝`
+
+  const N1 = `╔═╗╔╗ ╔═╗╔═╗╔╦╗`
+  const N2 = `║ ║║║ ║ ║╠═╣ ║  `
+  const N3 = `╚═╝╚╝ ╚═╝╩ ╩ ╩  `
+
+  const S1 = `╔═╗╔═╗╔╦╗`
+  const S2 = `║ ╚╝║  ║ `
+  const S3 = `╚═╗╔═╝ ╩ `
+  const S4 = `╚═╝╚═╝   `
+
+  const T1 = `╔═╗╔═╗╔═╗`
+  const T2 = `║     ║  `
+  const T3 = `║     ║  `
+  const T4 = `╚═╝   ╚═╝`
+
+  const H2_1 = `╔═╗╔═╗╔╦╗╔═╗╔╦╗`
+  const H2_2 = `╚═╗╠═╣ ║ ║╣  ║ `
+  const H2_3 = `╚═╝╩ ╩ ╩ ╚═╝ ╩ `
+
+  const E1 = `╔═╗╔═╗╔╦╗`
+  const E2 = `║ ╚╝   ║ `
+  const E3 = `╠═╗╔═╗ ║ `
+  const E4 = `╚═╝╚═╝ ╩ `
+
+  const J1 = `╔═╗╔═╗╔╦╗`
+  const J2 = `║     ║  `
+  const J3 = `║     ║  `
+  const J4 = `╚═╝╚═╝ ╩ `
+
+  const E2_1 = `╔═╗╔═╗╔╦╗`
+  const E2_2 = `║ ╚╝   ║ `
+  const E2_3 = `╠═╗╔═╗ ║ `
+  const E2_4 = `╚═╝╚═╝ ╩ `
+
+  const SH1 = `╔═╗╔═╗╔╦╗╔═╗╔╦╗╔═╗╦═╗╔╦╗`
+  const SH2 = `╚═╗╠═╣ ║ ║╣  ║ ║ ║╠╦╝ ║ `
+  const SH3 = `╚═╝╩ ╩ ╩ ╚═╝ ╩ ╚═╝╩╚══╩ `
 
   return (
     <>
       <box flexGrow={1} alignItems="center" paddingLeft={2} paddingRight={2}>
         <box flexGrow={1} minHeight={0} />
         <box flexShrink={0} flexDirection="column" alignItems="center">
-          <text fg={theme.text} bold>{A1}</text>
-          <text fg={theme.text} bold>{A2}</text>
-          <text fg={theme.text} bold>{A3}</text>
-          <text fg={theme.text} bold>{A4}</text>
-          <text fg={theme.text} bold>{A5}</text>
-          <text fg={theme.text} bold>{A6}</text>
-          <text fg={theme.text} bold>{A7}</text>
-          <text fg={theme.text} bold>{A8}</text>
-          <text fg={theme.text} bold>{A9}</text>
-          <text fg={theme.text} bold>{A10}</text>
-          <text fg={theme.text} bold>{A11}</text>
+          <text fg={theme.text} bold>{H1}  {L1}  {O1}  {N1}{S1}</text>
+          <text fg={theme.text} bold>{H2}  {L2}  {O2}  {N2}{S2}</text>
+          <text fg={theme.text} bold>{H3}  {L3}  {O3}  {N3}{S3}</text>
+          <text fg={theme.text} bold>{`     `}     {`     `}  {T1}{S4}</text>
+          <text fg={theme.text} bold>{`     `}     {`     `}  {T2} </text>
+          <text fg={theme.text} bold>{`     `}     {`     `}  {T3} </text>
+          <text fg={theme.text} bold>{`     `}     {`     `}  {T4} </text>
+          <text fg={theme.text} bold>{H2_1}{E1}{H2_1}{J1}{E2_1}</text>
+          <text fg={theme.text} bold>{H2_2}{E2}{H2_2}{J2}{E2_2}</text>
+          <text fg={theme.text} bold>{H2_3}{E3}{H2_3}{J3}{E2_3}</text>
+          <text fg={theme.text} bold>{`      `}{E4}{`      `}{J4}{E2_4}</text>
         </box>
         <box height={2} minHeight={0} flexShrink={1} />
         <box flexShrink={0} flexDirection="column" gap={1}>
