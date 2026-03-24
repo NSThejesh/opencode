@@ -107,38 +107,34 @@ export function Home() {
   )
   const directory = useDirectory()
 
-  const ASCII_HLO = `  _     _ `
-  const ASCII_HLO2 = ` ( )   | |`
-  const ASCII_HLO3 = ` | |   | |`
-  const ASCII_HLO4 = ` | |   | |`
-  const ASCII_HLO5 = `  |_|  |_|`
-
-  const ASCII_NST = ` _  _  _     _  _  _ `
-  const ASCII_NST2 = `| || | |   | || | | |`
-  const ASCII_NST3 = `| || | |   | || | | |`
-  const ASCII_NST4 = ` \\ V /    \\_\\ |/ \\_/`
-  const ASCII_NST5 = `  \\_/       |_|   |_`
+  const A1 = `/$$   /$$ /$$        /$$$$$$        /$$   /$$  /$$$$$$  /$$$$$$$$ /$$                                         /$$                  `
+  const A2 = `| $$  | $$| $$       /$$__  $$      | $$$ | $$ /$$__  $$|__  $$__/| $$                                        | $$                  `
+  const A3 = `| $$  | $$| $$      | $$  \\ $$      | $$$$| $$| $$  \\__/   | $$   | $$$$$$$   /$$$$$$  /$$  /$$$$$$   /$$$$$$$| $$$$$$$             `
+  const A4 = `| $$$$$$$$| $$      | $$  | $$      | $$ $$ $$|  $$$$$$    | $$   | $$__  $$ /$$__  $$|__/ /$$__  $$ /$$_____/| $$__  $$            `
+  const A5 = `| $$__  $$| $$      | $$  | $$      | $$  $$$$ \\____  $$   | $$   | $$  \\ $$| $$$$$$$$ /$$| $$$$$$$$|  $$$$$$ | $$  \\ $$            `
+  const A6 = `| $$  | $$| $$      | $$  | $$      | $$\\  $$$ /$$  \\ $$   | $$   | $$  | $$| $$_____/| $$| $$_____/ \\____  $$| $$  | $$            `
+  const A7 = `| $$  | $$| $$$$$$$$|  $$$$$$/      | $$ \\  $$|  $$$$$$/   | $$   | $$  | $$|  $$$$$$$| $$|  $$$$$$$ /$$$$$$$/| $$  | $$            `
+  const A8 = `|__/  |__/|________/ \\______/       |__/  \\__/ \\______/    |__/   |__/  |__/ \\_______/| $$ \\_______/|_______/ |__/  |__/            `
+  const A9 = `                                                                                 /$$  | $$                                          `
+  const A10 = `                                                                                |  $$$$$$/                                           `
+  const A11 = `                                                                                 \\______/                                            `
 
   return (
     <>
       <box flexGrow={1} alignItems="center" paddingLeft={2} paddingRight={2}>
         <box flexGrow={1} minHeight={0} />
         <box flexShrink={0} flexDirection="column" alignItems="center">
-          <text fg={theme.text} bold>
-            <text>{ASCII_HLO}{ASCII_NST}</text>
-          </text>
-          <text fg={theme.text} bold>
-            <text>{ASCII_HLO2}{ASCII_NST2}</text>
-          </text>
-          <text fg={theme.text} bold>
-            <text>{ASCII_HLO3}{ASCII_NST3}</text>
-          </text>
-          <text fg={theme.text} bold>
-            <text>{ASCII_HLO4}{ASCII_NST4}</text>
-          </text>
-          <text fg={theme.text} bold>
-            <text>{ASCII_HLO5}{ASCII_NST5}</text>
-          </text>
+          <text fg={theme.text} bold>{A1}</text>
+          <text fg={theme.text} bold>{A2}</text>
+          <text fg={theme.text} bold>{A3}</text>
+          <text fg={theme.text} bold>{A4}</text>
+          <text fg={theme.text} bold>{A5}</text>
+          <text fg={theme.text} bold>{A6}</text>
+          <text fg={theme.text} bold>{A7}</text>
+          <text fg={theme.text} bold>{A8}</text>
+          <text fg={theme.text} bold>{A9}</text>
+          <text fg={theme.text} bold>{A10}</text>
+          <text fg={theme.text} bold>{A11}</text>
         </box>
         <box height={2} minHeight={0} flexShrink={1} />
         <box flexShrink={0} flexDirection="column" gap={1}>
