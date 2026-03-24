@@ -49,11 +49,18 @@ import { useCheckServerHealth } from "./utils/server-health"
 
 const HomeRoute = lazy(() => import("@/pages/home"))
 const Session = lazy(() => import("@/pages/session"))
+const T3CodeSession = lazy(() => import("@/pages/t3code-session"))
 const Loading = () => <div class="size-full" />
 
 const SessionRoute = () => (
   <SessionProviders>
     <Session />
+  </SessionProviders>
+)
+
+const T3CodeSessionRoute = () => (
+  <SessionProviders>
+    <T3CodeSession />
   </SessionProviders>
 )
 
@@ -294,6 +301,7 @@ export function AppInterface(props: {
                 root={(routerProps) => <RouterRoot appChildren={props.children}>{routerProps.children}</RouterRoot>}
               >
                 <Route path="/" component={HomeRoute} />
+                <Route path="/t3code/:dir" component={T3CodeSessionRoute} />
                 <Route path="/:dir" component={DirectoryLayout}>
                   <Route path="/" component={SessionIndexRoute} />
                   <Route path="/session/:id?" component={SessionRoute} />
