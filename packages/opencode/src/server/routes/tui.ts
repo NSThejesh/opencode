@@ -273,6 +273,7 @@ export const TuiRoutes = lazy(() =>
             session_share: "session.share",
             session_interrupt: "session.interrupt",
             session_compact: "session.compact",
+            t3code_toggle: "session.t3code",
             messages_page_up: "session.page.up",
             messages_page_down: "session.page.down",
             messages_line_up: "session.line.up",

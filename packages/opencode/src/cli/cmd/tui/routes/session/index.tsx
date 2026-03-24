@@ -159,6 +159,7 @@ export function Session() {
   const [diffWrapMode] = kv.signal<"word" | "none">("diff_wrap_mode", "word")
   const [animationsEnabled, setAnimationsEnabled] = kv.signal("animations_enabled", true)
   const [showGenericToolOutput, setShowGenericToolOutput] = kv.signal("generic_tool_output_visibility", false)
+  const [t3codeMode, setT3codeMode] = kv.signal("t3code_mode", false)
 
   const wide = createMemo(() => dimensions().width > 120)
   const sidebarVisible = createMemo(() => {
@@ -473,6 +474,19 @@ export function Session() {
           modelID: selectedModel.modelID,
           providerID: selectedModel.providerID,
         })
+        dialog.clear()
+      },
+    },
+    {
+      title: "Toggle T3Code layout",
+      value: "session.t3code",
+      keybind: "t3code_toggle",
+      category: "Session",
+      slash: {
+        name: "t3code",
+      },
+      onSelect: (dialog) => {
+        setT3codeMode(!t3codeMode())
         dialog.clear()
       },
     },
@@ -1045,7 +1059,61 @@ export function Session() {
         tui: tuiConfig,
       }}
     >
-      <box flexDirection="row">
+      <Show when={t3codeMode()}>
+        <box flexDirection="row" flexGrow={1}>
+          <box width={30} flexDirection="column" gap={0}>
+            <box padding={1} border={["bottom"]}>
+              <text fg={theme.textBold}>Projects</text>
+            </box>
+            <scrollbox flexGrow={1}>
+              <box paddingLeft={1} paddingRight={1} paddingTop={1} paddingBottom={1}>
+                <text fg={theme.textMuted}>Project List</text>
+              </box>
+            </scrollbox>
+          </box>
+          <box width={1} />
+          <box width={40} flexDirection="column" gap={0}>
+            <box padding={1} border={["bottom"]} flexDirection="row" justifyContent="space-between">
+              <text fg={theme.textBold}>Threads</text>
+            </box>
+            <scrollbox flexGrow={1}>
+              <For each={sessions().slice(0, 20)}>
+                {(session) => (
+                  <box paddingLeft={1} paddingRight={1} paddingTop={1} paddingBottom={1}>
+                    <text fg={session.id === route.sessionID ? theme.text : theme.textMuted}>
+                      {session.id === route.sessionID ? ">" : " "} {session.title || "Untitled"}
+                    </text>
+                  </box>
+                )}
+              </For>
+            </scrollbox>
+          </box>
+          <box width={1} />
+          <box flexGrow={1} flexDirection="column">
+            <box height={3} border={["bottom"]} paddingLeft={1}>
+              <text fg={theme.textMuted}>
+                {session()?.title || "Session"} | {messages().length} messages | Ctrl+T to toggle
+              </text>
+            </box>
+            <scrollbox flexGrow={1}>
+              <For each={messages()}>
+                {(message) => (
+                  <box paddingLeft={1} paddingRight={1} paddingTop={1}>
+                    <text fg={message.role === "user" ? theme.text : theme.textMuted}>
+                      {message.role === "user" ? "User" : "Assistant"}
+                    </text>
+                  </box>
+                )}
+              </For>
+            </scrollbox>
+            <box height={3} border={["top"]} paddingLeft={1} flexDirection="row" alignItems="center">
+              <text fg={theme.textMuted}>Type a message...</text>
+            </box>
+          </box>
+        </box>
+      </Show>
+      <Show when={!t3codeMode()}>
+        <box flexDirection="row">
         <box flexGrow={1} paddingBottom={1} paddingTop={1} paddingLeft={2} paddingRight={2} gap={1}>
           <Show when={session()}>
             <Show when={showHeader() && (!sidebarVisible() || !wide())}>
@@ -1212,7 +1280,7 @@ export function Session() {
             </Match>
           </Switch>
         </Show>
-      </box>
+      </Show>
     </context.Provider>
   )
 }
