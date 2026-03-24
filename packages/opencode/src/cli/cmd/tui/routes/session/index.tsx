@@ -1077,7 +1077,7 @@ export function Session() {
               <text fg={theme.textBold}>Threads</text>
             </box>
             <scrollbox flexGrow={1}>
-              <For each={sessions().slice(0, 20)}>
+              <For each={children().filter((x) => !!x.parentID).slice(0, 20)}>
                 {(session) => (
                   <box paddingLeft={1} paddingRight={1} paddingTop={1} paddingBottom={1}>
                     <text fg={session.id === route.sessionID ? theme.text : theme.textMuted}>
