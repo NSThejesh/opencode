@@ -2,7 +2,6 @@ import { Prompt, type PromptRef } from "@tui/component/prompt"
 import { createEffect, createMemo, Match, on, onMount, Show, Switch } from "solid-js"
 import { useTheme } from "@tui/context/theme"
 import { useKeybind } from "@tui/context/keybind"
-import { Logo } from "../component/logo"
 import { Tips } from "../component/tips"
 import { Locale } from "@/util/locale"
 import { useSync } from "../context/sync"
@@ -15,6 +14,11 @@ import { Installation } from "@/installation"
 import { useKV } from "../context/kv"
 import { useCommandDialog } from "../component/dialog-command"
 import { useLocal } from "../context/local"
+import { useDialog } from "@tui/ui/dialog"
+import { DialogSessionList } from "../component/dialog-session-list"
+import { DialogModel } from "../component/dialog-model"
+import { DialogAgent } from "../component/dialog-agent"
+import { DialogMcp } from "../component/dialog-mcp"
 
 // TODO: what is the best way to do this?
 let once = false
@@ -26,6 +30,7 @@ export function Home() {
   const route = useRouteData("home")
   const promptRef = usePromptRef()
   const command = useCommandDialog()
+  const dialog = useDialog()
   const mcp = createMemo(() => Object.keys(sync.data.mcp).length > 0)
   const mcpError = createMemo(() => {
     return Object.values(sync.data.mcp).some((x) => x.status === "failed")
@@ -111,7 +116,44 @@ export function Home() {
         <box flexGrow={1} minHeight={0} />
         <box height={4} minHeight={0} flexShrink={1} />
         <box flexShrink={0}>
-          <Logo />
+          <text fg={theme.text} bold fontSize={2}>
+            hlo NST
+          </text>
+        </box>
+        <box height={1} minHeight={0} flexShrink={1} />
+        <box flexShrink={0} flexDirection="row" gap={2}>
+          <box
+            border={["left"]}
+            paddingLeft={1}
+            onMouseUp={() => dialog.replace(() => <DialogSessionList />)}
+          >
+            <text fg={theme.text}>Recent Sessions</text>
+            <text fg={theme.textMuted}> ctrl+x l</text>
+          </box>
+          <box
+            border={["left"]}
+            paddingLeft={1}
+            onMouseUp={() => dialog.replace(() => <DialogModel />)}
+          >
+            <text fg={theme.text}>Switch Model</text>
+            <text fg={theme.textMuted}> ctrl+x m</text>
+          </box>
+          <box
+            border={["left"]}
+            paddingLeft={1}
+            onMouseUp={() => dialog.replace(() => <DialogAgent />)}
+          >
+            <text fg={theme.text}>Switch Agent</text>
+            <text fg={theme.textMuted}> ctrl+x a</text>
+          </box>
+          <box
+            border={["left"]}
+            paddingLeft={1}
+            onMouseUp={() => dialog.replace(() => <DialogMcp />)}
+          >
+            <text fg={theme.text}>MCP Servers</text>
+            <text fg={theme.textMuted}> ctrl+x s</text>
+          </box>
         </box>
         <box height={1} minHeight={0} flexShrink={1} />
         <box width="100%" maxWidth={75} zIndex={1000} paddingTop={1} flexShrink={0}>
