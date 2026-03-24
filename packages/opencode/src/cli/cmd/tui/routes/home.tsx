@@ -108,53 +108,66 @@ export function Home() {
   )
   const directory = useDirectory()
 
+  const SidebarItem = (props: { label: string; hint: string; onClick: () => void }) => (
+    <box
+      border={["left"]}
+      paddingLeft={1}
+      onMouseUp={props.onClick}
+    >
+      <text fg={theme.text}>{props.label}</text>
+      <text fg={theme.textMuted}> {props.hint}</text>
+    </box>
+  )
+
   return (
     <>
-      <box flexGrow={1} alignItems="center" paddingLeft={2} paddingRight={2}>
-        <box flexGrow={1} minHeight={0} />
-        <box flexShrink={0}>
-          <Logo />
+      <box flexGrow={1} flexDirection="row">
+        <box width={25} flexDirection="column" border={["right"]}>
+          <box padding={1} border={["bottom"]}>
+            <text fg={theme.textBold}>Menu</text>
+          </box>
+          <scrollbox flexGrow={1}>
+            <box flexDirection="column" gap={0}>
+              <SidebarItem label="Sessions" hint="[ctrl+x l]" onClick={() => dialog.replace(() => <DialogSessionList />)} />
+              <SidebarItem label="Models" hint="[ctrl+x m]" onClick={() => dialog.replace(() => <DialogModel />)} />
+              <SidebarItem label="Agents" hint="[ctrl+x a]" onClick={() => dialog.replace(() => <DialogAgent />)} />
+              <SidebarItem label="MCP Servers" hint="[ctrl+x s]" onClick={() => dialog.replace(() => <DialogMcp />)} />
+            </box>
+          </scrollbox>
         </box>
-        <box height={2} minHeight={0} flexShrink={1} />
-        <box flexShrink={0} flexDirection="column" gap={2}>
-          <box border={["top", "left", "right", "bottom"]} padding={1} onMouseUp={() => dialog.replace(() => <DialogSessionList />)}>
-            <text fg={theme.text}>Recent Sessions</text>
-            <text fg={theme.textMuted}> [ctrl+x l]</text>
+
+        <box flexGrow={1} flexDirection="column">
+          <box flexGrow={1} />
+
+          <box flexShrink={0} alignItems="center">
+            <Logo />
           </box>
-          <box border={["top", "left", "right", "bottom"]} padding={1} onMouseUp={() => dialog.replace(() => <DialogModel />)}>
-            <text fg={theme.text}>Switch Model</text>
-            <text fg={theme.textMuted}> [ctrl+x m]</text>
+
+          <box flexGrow={1} />
+
+          <box width="100%" alignItems="center" paddingLeft={2} paddingRight={2} flexShrink={0}>
+            <Show when={showTips()}>
+              <Tips />
+            </Show>
           </box>
-          <box border={["top", "left", "right", "bottom"]} padding={1} onMouseUp={() => dialog.replace(() => <DialogAgent />)}>
-            <text fg={theme.text}>Switch Agent</text>
-            <text fg={theme.textMuted}> [ctrl+x a]</text>
+
+          <box flexGrow={1} />
+
+          <box padding={1} flexShrink={0}>
+            <Prompt
+              ref={(r) => {
+                prompt = r
+                promptRef.set(r)
+              }}
+              hint={Hint}
+              workspaceID={route.workspaceID}
+            />
           </box>
-          <box border={["top", "left", "right", "bottom"]} padding={1} onMouseUp={() => dialog.replace(() => <DialogMcp />)}>
-            <text fg={theme.text}>MCP Servers</text>
-            <text fg={theme.textMuted}> [ctrl+x s]</text>
-          </box>
+
+          <Toast />
         </box>
-        <box height={2} minHeight={0} flexShrink={1} />
-        <box width="100%" maxWidth={75} alignItems="center" flexShrink={1}>
-          <Show when={showTips()}>
-            <Tips />
-          </Show>
-        </box>
-        <box flexGrow={1} minHeight={0} />
-        <Toast />
       </box>
-      <box paddingTop={1} paddingBottom={1} paddingLeft={2} paddingRight={2} flexDirection="row" flexShrink={0} gap={2}>
-        <box width="100%" maxWidth={90} zIndex={1000}>
-          <Prompt
-            ref={(r) => {
-              prompt = r
-              promptRef.set(r)
-            }}
-            hint={Hint}
-            workspaceID={route.workspaceID}
-          />
-        </box>
-      </box>
+
       <box paddingTop={0} paddingBottom={1} paddingLeft={2} paddingRight={2} flexDirection="row" flexShrink={0} gap={2}>
         <text fg={theme.textMuted}>{directory()}</text>
         <box gap={1} flexDirection="row" flexShrink={0}>
