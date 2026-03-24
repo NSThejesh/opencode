@@ -148,6 +148,9 @@ export function Home() {
           </Show>
         </box>
         <box flexGrow={1} />
+        <text fg={theme.textMuted}>·</text>
+        <text fg={theme.textMuted}>ctrl+x e for editor</text>
+        <text fg={theme.textMuted}>·</text>
         <box flexShrink={0}>
           <text fg={theme.textMuted}>{Installation.VERSION}</text>
         </box>
