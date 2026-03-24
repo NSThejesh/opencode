@@ -1,6 +1,7 @@
 import { Prompt, type PromptRef } from "@tui/component/prompt"
 import { createEffect, createMemo, Match, on, onMount, Show, Switch } from "solid-js"
 import { useTheme } from "@tui/context/theme"
+import { Logo } from "../component/logo"
 import { Tips } from "../component/tips"
 import { Locale } from "@/util/locale"
 import { useSync } from "../context/sync"
@@ -107,34 +108,12 @@ export function Home() {
   )
   const directory = useDirectory()
 
-  const A1 = `/$$   /$$ /$$        /$$$$$$        /$$   /$$  /$$$$$$  /$$$$$$$$ /$$                                         /$$                  `
-  const A2 = `| $$  | $$| $$       /$$__  $$      | $$$ | $$ /$$__  $$|__  $$__/| $$                                        | $$                  `
-  const A3 = `| $$  | $$| $$      | $$  \\ $$      | $$$$| $$| $$  \\__/   | $$   | $$$$$$$   /$$$$$$  /$$  /$$$$$$   /$$$$$$$| $$$$$$$             `
-  const A4 = `| $$$$$$$$| $$      | $$  | $$      | $$ $$ $$|  $$$$$$    | $$   | $$__  $$ /$$__  $$|__/ /$$__  $$ /$$_____/| $$__  $$            `
-  const A5 = `| $$__  $$| $$      | $$  | $$      | $$  $$$$ \\____  $$   | $$   | $$  \\ $$| $$$$$$$$ /$$| $$$$$$$$|  $$$$$$ | $$  \\ $$            `
-  const A6 = `| $$  | $$| $$      | $$  | $$      | $$\\  $$$ /$$  \\ $$   | $$   | $$  | $$| $$_____/| $$| $$_____/ \\____  $$| $$  | $$            `
-  const A7 = `| $$  | $$| $$$$$$$$|  $$$$$$/      | $$ \\  $$|  $$$$$$/   | $$   | $$  | $$|  $$$$$$$| $$|  $$$$$$$ /$$$$$$$/| $$  | $$            `
-  const A8 = `|__/  |__/|________/ \\______/       |__/  \\__/ \\______/    |__/   |__/  |__/ \\_______/| $$ \\_______/|_______/ |__/  |__/            `
-  const A9 = `                                                                                 /$$  | $$                                          `
-  const A10 = `                                                                                |  $$$$$$/                                           `
-  const A11 = `                                                                                 \\______/                                            `
-
   return (
     <>
       <box flexGrow={1} alignItems="center" paddingLeft={2} paddingRight={2}>
         <box flexGrow={1} minHeight={0} />
-        <box flexShrink={0} flexDirection="column" alignItems="center">
-          <text fg={theme.text} bold>{A1}</text>
-          <text fg={theme.text} bold>{A2}</text>
-          <text fg={theme.text} bold>{A3}</text>
-          <text fg={theme.text} bold>{A4}</text>
-          <text fg={theme.text} bold>{A5}</text>
-          <text fg={theme.text} bold>{A6}</text>
-          <text fg={theme.text} bold>{A7}</text>
-          <text fg={theme.text} bold>{A8}</text>
-          <text fg={theme.text} bold>{A9}</text>
-          <text fg={theme.text} bold>{A10}</text>
-          <text fg={theme.text} bold>{A11}</text>
+        <box flexShrink={0}>
+          <Logo />
         </box>
         <box height={2} minHeight={0} flexShrink={1} />
         <box flexShrink={0} flexDirection="column" gap={2}>
