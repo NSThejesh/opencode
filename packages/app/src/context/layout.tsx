@@ -53,6 +53,8 @@ export type LocalProject = Partial<Project> & { worktree: string; expanded: bool
 
 export type ReviewDiffStyle = "unified" | "split"
 
+export type SidebarPosition = "left" | "right" | "bottom"
+
 export function ensureSessionKey(key: string, touch: (key: string) => void, seed: (key: string) => void) {
   touch(key)
   seed(key)
@@ -147,11 +149,17 @@ export const { use: useLayout, provider: LayoutProvider } = createSimpleContext(
       const sidebar = value.sidebar
       const migratedSidebar = (() => {
         if (!isRecord(sidebar)) return sidebar
-        if (typeof sidebar.workspaces !== "boolean") return sidebar
+        if (typeof sidebar.workspaces !== "boolean") {
+          if (sidebar.position === undefined) {
+            return { ...sidebar, position: "left" as const }
+          }
+          return sidebar
+        }
         return {
           ...sidebar,
           workspaces: {},
           workspacesDefault: sidebar.workspaces,
+          position: sidebar.position ?? "left",
         }
       })()
 
@@ -233,6 +241,7 @@ export const { use: useLayout, provider: LayoutProvider } = createSimpleContext(
           width: DEFAULT_PANEL_WIDTH,
           workspaces: {} as Record<string, boolean>,
           workspacesDefault: false,
+          position: "left" as SidebarPosition,
         },
         terminal: {
           height: DEFAULT_TERMINAL_HEIGHT,
@@ -598,6 +607,17 @@ export const { use: useLayout, provider: LayoutProvider } = createSimpleContext(
         width: createMemo(() => store.sidebar.width),
         resize(width: number) {
           setStore("sidebar", "width", width)
+        },
+        position: createMemo(() => store.sidebar.position),
+        setPosition(position: SidebarPosition) {
+          setStore("sidebar", "position", position)
+        },
+        togglePosition() {
+          const positions: SidebarPosition[] = ["left", "right", "bottom"]
+          const current = store.sidebar.position
+          const currentIndex = positions.indexOf(current)
+          const nextIndex = (currentIndex + 1) % positions.length
+          setStore("sidebar", "position", positions[nextIndex])
         },
         workspaces(directory: string) {
           return () => store.sidebar.workspaces[directory] ?? store.sidebar.workspacesDefault ?? false

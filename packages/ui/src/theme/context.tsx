@@ -4,6 +4,11 @@ import { createSimpleContext } from "../context/helper"
 import oc2ThemeJson from "./themes/oc-2.json"
 import { resolveThemeVariant, themeToCss } from "./resolve"
 import type { DesktopTheme } from "./types"
+import {
+  deleteCustomTheme as deleteStoredCustomTheme,
+  getCustomThemes,
+  saveCustomTheme,
+} from "./custom-theme-storage"
 
 export type ColorScheme = "light" | "dark" | "system"
 
@@ -265,6 +270,11 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
         if (!theme || store.themeId !== savedTheme) return
         cacheThemeVariants(theme, savedTheme)
       })
+
+      const customThemes = getCustomThemes()
+      for (const theme of customThemes) {
+        setStore("themes", theme.id, theme)
+      }
     })
 
     createEffect(() => {
@@ -355,6 +365,19 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
         void load(store.themeId).then((theme) => {
           if (!theme) return
           applyTheme(theme, store.themeId, store.mode)
+        })
+      },
+      registerCustomTheme: (theme: DesktopTheme) => {
+        saveCustomTheme(theme)
+        setStore("themes", theme.id, theme)
+      },
+      getCustomThemes: () => getCustomThemes(),
+      deleteCustomTheme: (id: string) => {
+        deleteStoredCustomTheme(id)
+        setStore("themes", (prev) => {
+          const next = { ...prev }
+          delete next[id]
+          return next
         })
       },
     }

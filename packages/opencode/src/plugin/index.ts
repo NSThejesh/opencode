@@ -14,6 +14,7 @@ import { gitlabAuthPlugin as GitlabAuthPlugin } from "opencode-gitlab-auth"
 import { Effect, Layer, ServiceMap } from "effect"
 import { InstanceState } from "@/effect/instance-state"
 import { makeRunPromise } from "@/effect/run-service"
+import { runtimeRegistry } from "./runtime-registry"
 
 export namespace Plugin {
   const log = Log.create({ service: "plugin" })
@@ -84,7 +85,14 @@ export namespace Plugin {
               const init = await plugin(input).catch((err) => {
                 log.error("failed to load internal plugin", { name: plugin.name, error: err })
               })
-              if (init) hooks.push(init)
+              if (init) {
+                hooks.push(init)
+                runtimeRegistry.registerPlugin({
+                  id: plugin.name,
+                  name: plugin.name,
+                  hooks: Object.keys(init).filter((k) => typeof (init as any)[k] === "function"),
+                })
+              }
             }
 
             let plugins = cfg.plugin ?? []
@@ -117,10 +125,16 @@ export namespace Plugin {
               await import(plugin)
                 .then(async (mod) => {
                   const seen = new Set<PluginInstance>()
-                  for (const [_name, fn] of Object.entries<PluginInstance>(mod)) {
+                  for (const [name, fn] of Object.entries<PluginInstance>(mod)) {
                     if (seen.has(fn)) continue
                     seen.add(fn)
-                    hooks.push(await fn(input))
+                    const hook = await fn(input)
+                    hooks.push(hook)
+                    runtimeRegistry.registerPlugin({
+                      id: name,
+                      name: name,
+                      hooks: Object.keys(hook).filter((k) => typeof (hook as any)[k] === "function"),
+                    })
                   }
                 })
                 .catch((err) => {

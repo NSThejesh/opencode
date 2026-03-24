@@ -1,4 +1,4 @@
-import { splitProps, type JSX } from "solid-js"
+import { createSignal, splitProps, type JSX } from "solid-js"
 
 export interface ResizeHandleProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, "onResize"> {
   direction: "horizontal" | "vertical"
@@ -9,6 +9,8 @@ export interface ResizeHandleProps extends Omit<JSX.HTMLAttributes<HTMLDivElemen
   onResize: (size: number) => void
   onCollapse?: () => void
   collapseThreshold?: number
+  snapPoints?: number[]
+  snapThreshold?: number
 }
 
 export function ResizeHandle(props: ResizeHandleProps) {
@@ -21,9 +23,13 @@ export function ResizeHandle(props: ResizeHandleProps) {
     "onResize",
     "onCollapse",
     "collapseThreshold",
+    "snapPoints",
+    "snapThreshold",
     "class",
     "classList",
   ])
+
+  const [isSnapping, setIsSnapping] = createSignal(false)
 
   const handleMouseDown = (e: MouseEvent) => {
     e.preventDefault()
@@ -47,7 +53,21 @@ export function ResizeHandle(props: ResizeHandleProps) {
             : pos - start
       current = startSize + delta
       const clamped = Math.min(local.max, Math.max(local.min, current))
-      local.onResize(clamped)
+
+      const threshold = local.snapThreshold ?? 10
+      if (!local.onCollapse && local.snapPoints && local.snapPoints.length > 0) {
+        const nearestSnap = local.snapPoints.find((sp) => Math.abs(sp - clamped) <= threshold)
+        if (nearestSnap !== undefined) {
+          local.onResize(nearestSnap)
+          setIsSnapping(true)
+        } else {
+          local.onResize(clamped)
+          setIsSnapping(false)
+        }
+      } else {
+        local.onResize(clamped)
+        setIsSnapping(false)
+      }
     }
 
     const onMouseUp = () => {
@@ -55,6 +75,7 @@ export function ResizeHandle(props: ResizeHandleProps) {
       document.body.style.overflow = ""
       document.removeEventListener("mousemove", onMouseMove)
       document.removeEventListener("mouseup", onMouseUp)
+      setIsSnapping(false)
 
       const threshold = local.collapseThreshold ?? 0
       if (local.onCollapse && threshold > 0 && current < threshold) {
@@ -72,6 +93,7 @@ export function ResizeHandle(props: ResizeHandleProps) {
       data-component="resize-handle"
       data-direction={local.direction}
       data-edge={local.edge ?? (local.direction === "vertical" ? "start" : "end")}
+      data-snapping={isSnapping() ? "" : undefined}
       classList={{
         ...(local.classList ?? {}),
         [local.class ?? ""]: !!local.class,
