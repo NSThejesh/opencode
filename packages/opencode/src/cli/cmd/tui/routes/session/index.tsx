@@ -1107,23 +1107,6 @@ export function Session() {
             <box width={1} />
           </Show>
           <box flexGrow={1} flexDirection="column">
-            <box height={1} border={["bottom"]} paddingLeft={1} flexShrink={0}>
-              <text fg={theme.textMuted}>
-                {session()?.title || "Session"} · {messages().length} msgs · {local.agent.current().name}
-                {(() => {
-                  const msgs = messages()
-                  const last = msgs.findLast((x) => x.role === "assistant" && x.tokens?.output > 0) as AssistantMessage | undefined
-                  if (!last) return ""
-                  const total = last.tokens.input + last.tokens.output + last.tokens.reasoning + last.tokens.cache.read + last.tokens.cache.write
-                  const model = sync.data.provider.find((x) => x.id === last.providerID)?.models[last.modelID]
-                  const limit = model?.limit?.context ?? 0
-                  const pct = limit > 0 ? Math.round((total / limit) * 100) : 0
-                  const filled = Math.round(pct / 10)
-                  const bar = "█".repeat(filled) + "░".repeat(10 - filled)
-                  return ` · [${bar}] ${pct}%`
-                })()}
-              </text>
-            </box>
             <scrollbox
               ref={(r) => (scroll = r)}
               viewportOptions={{
@@ -1434,6 +1417,23 @@ export function Session() {
           </Switch>
         </Show>
       </Show>
+      <box height={1} border={["top"]} paddingLeft={1} paddingRight={1} flexShrink={0}>
+        <text fg={theme.textMuted}>
+          {session()?.title || "Session"} · {messages().length} msgs · {local.agent.current().name}
+          {(() => {
+            const msgs = messages()
+            const last = msgs.findLast((x) => x.role === "assistant" && x.tokens?.output > 0) as AssistantMessage | undefined
+            if (!last) return ""
+            const total = last.tokens.input + last.tokens.output + last.tokens.reasoning + last.tokens.cache.read + last.tokens.cache.write
+            const model = sync.data.provider.find((x) => x.id === last.providerID)?.models[last.modelID]
+            const limit = model?.limit?.context ?? 0
+            const pct = limit > 0 ? Math.round((total / limit) * 100) : 0
+            const filled = Math.round(pct / 10)
+            const bar = "█".repeat(filled) + "░".repeat(10 - filled)
+            return ` · [${bar}] ${pct}%`
+          })()}
+        </text>
+      </box>
     </context.Provider>
   )
 }
