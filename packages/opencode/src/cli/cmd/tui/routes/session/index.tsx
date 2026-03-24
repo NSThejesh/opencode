@@ -1076,14 +1076,14 @@ export function Session() {
             </scrollbox>
           </box>
           <box width={1} />
-          <box width={35} flexDirection="column" gap={0}>
+          <box width={30} flexDirection="column" gap={0}>
             <box padding={1} border={["bottom"]} flexDirection="row" justifyContent="space-between">
               <text fg={theme.textBold}>Threads</text>
             </box>
             <scrollbox flexGrow={1}>
               <For each={children().slice(0, 20)}>
                 {(session) => (
-                  <box paddingLeft={1} paddingRight={1} paddingTop={1} paddingBottom={1}>
+                  <box paddingLeft={1} paddingRight={1} paddingTop={0} paddingBottom={0}>
                     <text fg={session.id === route.sessionID ? theme.text : theme.textMuted}>
                       {session.id === route.sessionID ? ">" : " "} {session.title || "Untitled"}
                     </text>
@@ -1091,6 +1091,17 @@ export function Session() {
                 )}
               </For>
             </scrollbox>
+            <box padding={1} border={["top"]}>
+              <text fg={theme.textMuted}>
+                {(() => {
+                  const msgs = messages()
+                  const last = msgs.findLast((x) => x.role === "assistant" && x.tokens?.output > 0) as AssistantMessage | undefined
+                  if (!last) return "No context data"
+                  const total = last.tokens.input + last.tokens.output + last.tokens.reasoning + last.tokens.cache.read + last.tokens.cache.write
+                  return `${total.toLocaleString()} ctx`
+                })()}
+              </text>
+            </box>
           </box>
           <box width={1} />
           <box flexGrow={1} flexDirection="column">
@@ -1462,9 +1473,9 @@ function UserMessage(props: {
               setHover(false)
             }}
             onMouseUp={props.onMouseUp}
-            paddingTop={1}
-            paddingBottom={1}
-            paddingLeft={2}
+            paddingTop={0}
+            paddingBottom={0}
+            paddingLeft={1}
             backgroundColor={hover() ? theme.backgroundElement : theme.backgroundPanel}
             flexShrink={0}
           >
