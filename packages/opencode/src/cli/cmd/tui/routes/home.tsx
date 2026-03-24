@@ -1,7 +1,6 @@
 import { Prompt, type PromptRef } from "@tui/component/prompt"
 import { createEffect, createMemo, Match, on, onMount, Show, Switch } from "solid-js"
 import { useTheme } from "@tui/context/theme"
-import { useKeybind } from "@tui/context/keybind"
 import { Tips } from "../component/tips"
 import { Locale } from "@/util/locale"
 import { useSync } from "../context/sync"
@@ -108,27 +107,48 @@ export function Home() {
   )
   const directory = useDirectory()
 
-  const keybind = useKeybind()
+  const ASCII_HLO = `  _     _ `
+  const ASCII_HLO2 = ` ( )   | |`
+  const ASCII_HLO3 = ` | |   | |`
+  const ASCII_HLO4 = ` | |   | |`
+  const ASCII_HLO5 = `  |_|  |_|`
+
+  const ASCII_NST = ` _  _  _     _  _  _ `
+  const ASCII_NST2 = `| || | |   | || | | |`
+  const ASCII_NST3 = `| || | |   | || | | |`
+  const ASCII_NST4 = ` \\ V /    \\_\\ |/ \\_/`
+  const ASCII_NST5 = `  \\_/       |_|   |_`
 
   return (
     <>
       <box flexGrow={1} alignItems="center" paddingLeft={2} paddingRight={2}>
         <box flexGrow={1} minHeight={0} />
-        <box height={4} minHeight={0} flexShrink={1} />
-        <box flexShrink={0}>
-          <text fg={theme.text} bold fontSize={2}>
-            hlo NST
+        <box flexShrink={0} flexDirection="column" alignItems="center">
+          <text fg={theme.text} bold>
+            <text>{ASCII_HLO}{ASCII_NST}</text>
+          </text>
+          <text fg={theme.text} bold>
+            <text>{ASCII_HLO2}{ASCII_NST2}</text>
+          </text>
+          <text fg={theme.text} bold>
+            <text>{ASCII_HLO3}{ASCII_NST3}</text>
+          </text>
+          <text fg={theme.text} bold>
+            <text>{ASCII_HLO4}{ASCII_NST4}</text>
+          </text>
+          <text fg={theme.text} bold>
+            <text>{ASCII_HLO5}{ASCII_NST5}</text>
           </text>
         </box>
-        <box height={1} minHeight={0} flexShrink={1} />
-        <box flexShrink={0} flexDirection="row" gap={2}>
+        <box height={2} minHeight={0} flexShrink={1} />
+        <box flexShrink={0} flexDirection="column" gap={1}>
           <box
             border={["left"]}
             paddingLeft={1}
             onMouseUp={() => dialog.replace(() => <DialogSessionList />)}
           >
             <text fg={theme.text}>Recent Sessions</text>
-            <text fg={theme.textMuted}> ctrl+x l</text>
+            <text fg={theme.textMuted}> [ctrl+x l]</text>
           </box>
           <box
             border={["left"]}
@@ -136,7 +156,7 @@ export function Home() {
             onMouseUp={() => dialog.replace(() => <DialogModel />)}
           >
             <text fg={theme.text}>Switch Model</text>
-            <text fg={theme.textMuted}> ctrl+x m</text>
+            <text fg={theme.textMuted}> [ctrl+x m]</text>
           </box>
           <box
             border={["left"]}
@@ -144,7 +164,7 @@ export function Home() {
             onMouseUp={() => dialog.replace(() => <DialogAgent />)}
           >
             <text fg={theme.text}>Switch Agent</text>
-            <text fg={theme.textMuted}> ctrl+x a</text>
+            <text fg={theme.textMuted}> [ctrl+x a]</text>
           </box>
           <box
             border={["left"]}
@@ -152,11 +172,20 @@ export function Home() {
             onMouseUp={() => dialog.replace(() => <DialogMcp />)}
           >
             <text fg={theme.text}>MCP Servers</text>
-            <text fg={theme.textMuted}> ctrl+x s</text>
+            <text fg={theme.textMuted}> [ctrl+x s]</text>
           </box>
         </box>
-        <box height={1} minHeight={0} flexShrink={1} />
-        <box width="100%" maxWidth={75} zIndex={1000} paddingTop={1} flexShrink={0}>
+        <box height={2} minHeight={0} flexShrink={1} />
+        <box width="100%" maxWidth={75} alignItems="center" flexShrink={1}>
+          <Show when={showTips()}>
+            <Tips />
+          </Show>
+        </box>
+        <box flexGrow={1} minHeight={0} />
+        <Toast />
+      </box>
+      <box paddingTop={1} paddingBottom={1} paddingLeft={2} paddingRight={2} flexDirection="row" flexShrink={0} gap={2}>
+        <box width="100%" maxWidth={90} zIndex={1000}>
           <Prompt
             ref={(r) => {
               prompt = r
@@ -166,15 +195,8 @@ export function Home() {
             workspaceID={route.workspaceID}
           />
         </box>
-        <box height={4} minHeight={0} width="100%" maxWidth={75} alignItems="center" paddingTop={3} flexShrink={1}>
-          <Show when={showTips()}>
-            <Tips />
-          </Show>
-        </box>
-        <box flexGrow={1} minHeight={0} />
-        <Toast />
       </box>
-      <box paddingTop={1} paddingBottom={1} paddingLeft={2} paddingRight={2} flexDirection="row" flexShrink={0} gap={2}>
+      <box paddingTop={0} paddingBottom={1} paddingLeft={2} paddingRight={2} flexDirection="row" flexShrink={0} gap={2}>
         <text fg={theme.textMuted}>{directory()}</text>
         <box gap={1} flexDirection="row" flexShrink={0}>
           <Show when={mcp()}>
